@@ -1,0 +1,96 @@
+/* body
+{
+    text-align: center;
+} */
+
+/* begin login.html */
+div#head
+{
+    text-align: center;
+    margin: 70px auto;
+}
+
+div#tip
+{
+    text-align: center;
+    margin: 0 auto;
+    font-size: 12;
+    color: red;
+}
+
+div#app
+{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 800px;
+    height: 500px;
+    margin-left: -400px;
+    margin-top: -250px;
+    background: url("../res/images/loginbgimg.jpg") no-repeat center; 
+    /* border: 1px solid greenyellow; */
+    /* background-color: green; */
+    border-radius: 5%;
+    box-shadow: 10px 10px 5px #888888;
+    
+}
+
+div.area
+{
+    text-align: center;
+    margin: 0 auto;
+    width: 250px;
+    height: 30px;
+    margin-top: 15px;
+    border: 1px solid rebeccapurple;
+    /* border-radius: 5%; */
+}
+
+div.lab
+{   
+    float: left;
+    width: 100px;
+    height: 30px;
+    background: greenyellow;
+}
+
+div.labsubmit
+{
+    background: greenyellow;
+}
+
+div#inp
+{
+    float: right;
+    width: 150px;
+    height: 30px;
+}
+
+label
+{
+    height: 30px;
+    line-height: 30px;
+}
+
+input.txt
+{
+    width: 150px;
+    height: 30px;
+}
+
+div#form
+{
+    text-align: center;
+    margin: 0 auto;
+}
+
+input#btnsub
+{
+    width: 250px;
+    font-size: 18;
+    background: greenyellow;
+    /* border-radius: 5%; */
+    border: 1px solid rebeccapurple;
+}
+
+/* end login.html */
