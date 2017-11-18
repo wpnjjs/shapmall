@@ -10,8 +10,8 @@
         </style> -->
         <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+        <script src="./pages/jquery-3.2.1.min.js"></script>
         <script src="./pages/vue.min.js"></script>
-        
     </head>
     <body>
         <div id="app">
@@ -21,7 +21,7 @@
             </div>
             <div id="body">
                 <div id="form">
-                    <!-- /login -->
+                    <!-- /login action="/login" -->
                     <form name="login" method="post">
                         <div id="tip">
                             <p>{{ tips }}</p>
@@ -44,6 +44,7 @@
                             </div>
                         </div>
                         <br/>
+                        <!-- <input type="submit" value="Submit"/> -->
                         <input id="btnsub" type="button" value="登       录" v-on:click="submitVerify"/>
                     </form>
                 </div>

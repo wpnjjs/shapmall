@@ -2,6 +2,7 @@ package tryit
 
 import (
 	"fmt"
+	"time"
 	"../priv_utils"
 )
 
@@ -14,6 +15,7 @@ func main() {
 	// }()
 	// tryone()
 	// fmt.Println("main end")
+	fmt.Println(time.Now().String())
 	DeEnCryptTest()
 }
 

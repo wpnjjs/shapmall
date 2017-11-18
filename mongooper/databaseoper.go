@@ -13,7 +13,7 @@ func Connect() (s *mgo.Session, db *mgo.Database){
 	}
 	// defer session.Close(),此处不要关闭，不然会提示Session Already Closed panic
 	session.SetMode(mgo.Monotonic,true)
-	database := session.DB("test")
+	database := session.DB("shopmall")
 	fmt.Println("返回数据库操作对象")
 	return session, database
 }
@@ -24,16 +24,19 @@ type Operator interface {
 	Delete() int
 	Update() int
 	Retrieve(idx string) interface{}
+	RetrieveCount() int
+	// Get_ID(name string) interface{}
 }
 
 // 后台用户管理（Account Management）
 type AccountManagement struct {
-	AccountName string //账号名
-	Password string //账号密码
-	CreatorCode string  //创建者
-	CreateDate string //创建时间
-	ModifiedDate string //修改时间
-	RollCode string //角色码
+	Id_ bson.ObjectId `bson:"_id"`
+	AccountName string `bson:"accountname"` //账号名
+	Password string `bson:"password"` //账号密码
+	CreatorCode string  `bson:"creatorcode"` //创建者
+	CreateDate string `bson:"createdate"` //创建时间
+	ModifiedDate string `bson:"modifieddate"` //修改时间
+	RollCode string `bson:"rollcode"` //角色码
 }
 
 func (account *AccountManagement) Create() int {
@@ -61,7 +64,7 @@ func (account *AccountManagement) Update() int {
 	return 0
 }
 
-func (account *AccountManagement) Retrieve(idx string) interface{} {
+func (account *AccountManagement) Retrieve(idx string) (int, *AccountManagement) {
 	fmt.Println("Retrieve", idx)
 	session, database := Connect()
 	defer session.Close()
@@ -73,11 +76,43 @@ func (account *AccountManagement) Retrieve(idx string) interface{} {
 	fmt.Println("after find")
 	if err != nil { 
 		fmt.Println("find error")
-		return -1
+		return -1, nil
 		// panic(err) 
 	}
 	fmt.Println("Retrieve", accountone)
-	var oper Operator = accountone
-	fmt.Println()
-	return oper
+	fmt.Println("Retrieve", accountone.Id_)
+	// var oper Operator = accountone
+	return 1, accountone
 }
+
+func (account *AccountManagement) RetrieveCount() int {
+	fmt.Println("RetrieveCount")
+	session, database := Connect()
+	defer session.Close()
+	fmt.Println("before get collection")
+	coll := database.C("accountmanagement")
+	// var accountone *AccountManagement
+	fmt.Println("before find")
+	count, err := coll.Count()
+	fmt.Println("after find")
+	if err != nil { 
+		fmt.Println("find error")
+		return -1
+		// panic(err) 
+	}
+	return count
+}
+
+// func (account *AccountManagement) Get_ID(name string) interface{} {
+// 	fmt.Println("Get_ID")
+// 	session, database := Connect()
+// 	defer session.Close()
+// 	fmt.Println("before get collection")
+// 	coll := database.C("accountmanagement")
+// 	// var accountone *AccountManagement
+// 	fmt.Println("before find")
+// 	var result *Result
+// 	coll.Find(bson.M{"accountname":name}).One(&result) //.Select(bson.M{"_id":1})
+// 	fmt.Println("after find", result.AccountId)
+// 	return 0
+// }

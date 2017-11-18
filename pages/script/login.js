@@ -8,23 +8,43 @@ var form = new Vue({
     methods: {
         submitVerify: _.debounce(
             function() {
-                console.log("exec...");
                 if(this.username === "" || this.password === ""){
                     this.tips = "请输入用户名或密码，不能为空！"
                 }else{
-                    console.log("username:" + this.username);
-                    console.log("password:" + this.password);
                     // ajax 请求服务器
-                    axios.post('/login',{
-                        useru: "admin",//this.username,
-                        passw: "admin123"//this.password
-                    })
-                    .then(function (response) {
-                        console.log(response)
-                    })
-                    .catch(function (error) {
-                        console.log(error)
+                    $.ajax({
+                        type: "POST",
+                        url: "/login",
+                        traditional: true,
+                        data: {username: this.username,password: this.password},
+                        success: function(msg) {
+                            bakmsg = msg.split('|')
+                            console.log(bakmsg)
+                            if(bakmsg[0] === "1"){
+                                window.location.href = bakmsg[1]
+                            }else if(bakmsg[0] === "0"){
+                                this.tips = "用户名或密码错误！"
+                            }
+                        }.bind(this),
+                        error: function(msg){
+                            this.tips = "服务器异常！"
+                        }.bind(this)            
                     });
+                    // 如下方法无法传递值,(服务器无法通过r的formvalue方法获取post值)
+                    // axios({
+                    //     method: 'post',
+                    //     url: '/login',
+                    //     data: {
+                    //         firstName: 'Fred'
+                    //     },
+                    // })
+                    // .then(function (response) {
+                    //     console.log(response);
+                    //     this.tips = "用户名或密码错误";
+                    // })
+                    // .catch(function (error) {
+                    //     console.log(error)
+                    // });
                 }
                 // this.tips = "用户名或密码错误";
             }
@@ -32,13 +52,3 @@ var form = new Vue({
         ,500)
     }
 })
-
-function outdo(x) {
-    console.log("outdo");
-    x.style.background="greenyellow";
-}
-
-function overdo(x) {
-    console.log("overdo");
-    x.style.background="green";
-}
