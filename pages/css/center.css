@@ -1,0 +1,71 @@
+div#top
+{
+    height: 60px;
+}
+
+div#top_left
+{
+    float: left;
+    width: 250px;
+    height: 60px;
+}
+
+div#top_right
+{
+    width: 250px;
+    height: 60px;
+    float: right;
+}
+
+div#icon
+{
+    width: 60px;
+    height: 60px;
+    float: left;
+    background: url("../res/images/icon.jpg") no-repeat center; 
+}
+
+div#sysname
+{
+    height: 60px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* div#info
+{
+    float: left;
+} */
+
+table#loginfo
+{
+    float: right;
+}
+
+div#line
+{
+    height: 2px;
+    background: grey;
+}
+
+div#tree
+{
+    float: left;
+    width: 180px;
+    height: 100%;
+    border-right: 2px solid grey;
+}
+
+table#navi 
+{
+    width: 175px;
+    border: 2px solid #42b983;
+    border-radius: 3px;
+    background-color: #fff;
+    margin: 5px 0px;
+}
+
+/* td#leaf
+{
+
+} */

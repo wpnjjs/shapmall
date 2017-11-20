@@ -31,15 +31,20 @@ func Loginhandler(w http.ResponseWriter, r *http.Request) {
 		name := r.PostFormValue("username")
 		pwd := r.PostFormValue("password")
 		// 获取username对应的用户数据信息
-		fmt.Println(name, pwd)
+		// fmt.Println(name, pwd)
 		accountfind := mongooper.AccountManagement{}
 		oper := &accountfind
 		bak, obj := oper.Retrieve(name)
 		if bak != -1 {
-			fmt.Println("id:", obj.Id_)
-			fmt.Println("id:", obj.Id_.Hex())
-			if obj.AccountName == name && obj.Password == pwd {
-				htmlstr = []byte("1|./pages/error.html|" + obj.Id_.Hex())
+			// fmt.Println("id:", obj.Id_)
+			// fmt.Println("id:", obj.Id_.Hex())
+			decryptstr, _ := priv_utils.DesDecrypt(obj.Password,[]byte(priv_utils.KeyGen(name)))
+			// fmt.Println("decryptstr", decryptstr)
+			if obj.AccountName == name && string(decryptstr) == pwd {
+				// enidstr, _ := priv_utils.DesEncrypt([]byte(obj.Id_.Hex()),[]byte(priv_utils.KeyGen(obj.Id_.Hex())))
+				// fmt.Println("enidstr",enidstr)
+				// fmt.Println("enidstr",string(enidstr))
+				htmlstr = []byte("1|./pages/managecenter.html|" + obj.Id_.Hex())
 			}else{
 				htmlstr = []byte("0")
 			}
@@ -51,18 +56,25 @@ func Loginhandler(w http.ResponseWriter, r *http.Request) {
 					// var oper mongooper.Operator
 					id := bson.NewObjectId()
 					fmt.Println("createid is >>", id)
+					
+					encryptstr, _ := priv_utils.DesEncrypt([]byte(pwd), []byte(priv_utils.KeyGen(name)))
+					// fmt.Println("encryptstr", encryptstr)
 					accountcreate := mongooper.AccountManagement{
 						id,
 						name,
-						pwd,
+						encryptstr,
 						"0000",
-						time.Now().String(),
+						time.Now(),
+						"",
 						"",
 						"0"}
 					oper := &accountcreate
 					createflag := oper.Create()
 					if createflag == 1 {
-						htmlstr = []byte("1|./pages/error.html|"+id.Hex())
+						// enidstr, _ := priv_utils.DesEncrypt([]byte(id.Hex()),[]byte(priv_utils.KeyGen(id.Hex())))
+						// fmt.Println("first enidstr",enidstr)
+						// fmt.Println("first enidstr",string(enidstr))
+						htmlstr = []byte("1|./pages/managecenter.html|"+id.Hex())
 					}
 				}
 			}else{

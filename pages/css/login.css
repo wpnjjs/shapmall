@@ -51,12 +51,12 @@ div.lab
     float: left;
     width: 100px;
     height: 30px;
-    background: greenyellow;
+    background: grey;
 }
 
 div.labsubmit
 {
-    background: greenyellow;
+    background: grey;
 }
 
 div#inp
@@ -88,7 +88,7 @@ input#btnsub
 {
     width: 250px;
     font-size: 18;
-    background: greenyellow;
+    background: grey;
     /* border-radius: 5%; */
     border: 1px solid rebeccapurple;
 }

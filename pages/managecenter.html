@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>Shopping Mall Management</title>
+        <link href="./css/center.css" rel="stylesheet" type="text/css"/>
+        <link rel="bookmark" type="image/x-icon" href="./res/favicon.ico"/>
+        <link rel="shortcut icon" href="./res/favicon.ico"/>
+        <link rel="icon" href="./res/favicon.ico"/>
+        <!-- <style type="text/css">
+            @import "./pages/css/common.css";
+        </style> -->
+        <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+        <script src="./jquery-3.2.1.min.js"></script>
+        <script src="./vue.min.js"></script>
+    </head>
+    <body>
+        <div id="top">
+            <div id="top_left">
+                <div id="icon">
+                    <img scr=""/>
+                </div>
+                <div id="sysname">
+                    <p>管理中心<br>Management Center</p>
+                </div>
+            </div>
+            <div id="top_right">
+                <table id="loginfo">
+                    <tr>
+                        <td>
+                            {{ username }}
+                        </td>
+                        <td>
+                            <a v-bind:href="['/login/'+username]"> 退出 </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <script src="./script/center.js"></script>
+        </div>
+        <div id="line"></div>
+        <div id="content">
+            <div id="tree">
+                <table id="navi">
+                    <tr>
+                        <td id=“leaf” style="background-color: #42b983;">对接管理</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="page"></div>
+        </div>
+        <script>
+            console.log(localStorage.uid);
+            document.write(localStorage.name);
+            document.write(localStorage.uid);
+        </script>
+    </body>
+</html>

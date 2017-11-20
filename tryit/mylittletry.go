@@ -1,3 +1,4 @@
+// package main
 package tryit
 
 import (
@@ -16,6 +17,7 @@ func main() {
 	// tryone()
 	// fmt.Println("main end")
 	fmt.Println(time.Now().String())
+	// fmt.Println(time.Location.Local())
 	DeEnCryptTest()
 }
 

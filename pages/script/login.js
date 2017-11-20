@@ -19,8 +19,11 @@ var form = new Vue({
                         data: {username: this.username,password: this.password},
                         success: function(msg) {
                             bakmsg = msg.split('|')
-                            console.log(bakmsg)
+                            // console.log(bakmsg)
                             if(bakmsg[0] === "1"){
+                                localStorage.uid = bakmsg[2]
+                                localStorage.name = this.username
+                                // console.log(localStorage.uid)
                                 window.location.href = bakmsg[1]
                             }else if(bakmsg[0] === "0"){
                                 this.tips = "用户名或密码错误！"

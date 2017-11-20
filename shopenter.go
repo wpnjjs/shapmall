@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"io/ioutil"
 	"fmt"
 	"net/http"
@@ -11,7 +12,7 @@ import (
 
 
 func main(){
-	fmt.Println("Test")
+	fmt.Println("["+time.Now().String()+"]:Go Service is running...")
 	http.HandleFunc("/test",tryit.Testhandler)
 	http.HandleFunc("/login",logicalcontrol.Loginhandler)
 	http.HandleFunc("/pages/",getres)

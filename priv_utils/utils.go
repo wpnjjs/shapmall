@@ -6,6 +6,7 @@ import (
 	"crypto/des"
 	"log"
 	"os"
+	"fmt"
 )
 
 // 检查文件是否存在
@@ -68,4 +69,16 @@ func PKCS5UnPadding(origData []byte) []byte {
 	length := len(origData)
 	unpadding := int(origData[length-1])
 	return origData[:(length-unpadding)]
+}
+
+// keygen
+func KeyGen(key string) string {
+	var strkey string
+	if len(key) >= 8 {
+		strkey = string([]rune(key)[:8])
+	}else{
+		strkey = key + string([]rune("!@#$%^&*")[:(8-len(key))])
+	}
+	fmt.Println("strkey", strkey)
+	return strkey
 }
