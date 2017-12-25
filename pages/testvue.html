@@ -127,5 +127,30 @@
             }
         })
         </script>
+
+
+        <!-- 全局API -->
+        <!-- Vue.extend(options) 使用vue构造器，创建一个Vue类的子类构造器。此内data必须是函数-->
+        <div id="mount-point">
+
+        </div>
+        <script>
+            // 创建构造器
+            var Profile = Vue.extend({
+                template: '<p>{{ firstname }} {{ lastname }} aka {{ alias }}</p>',
+                data: function() {
+                    return {
+                        firstname: "wu",
+                        lastname: "peng",
+                        alias: "coolman"
+                    }
+                }
+            })
+            // 创建Profile实例，并挂载到元素上
+            new Profile().$mount('#mount-point')
+        </script>
+
+        
+        
     </body>
 </html>

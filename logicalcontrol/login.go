@@ -6,14 +6,16 @@ import (
 	"net/http"
 	"../mongooper"
 	"../priv_utils"
-	"os"
+	// "os"
 	"log"
-	"io/ioutil"
+	// "io/ioutil"
 	"gopkg.in/mgo.v2/bson"
+	// "strings"
 )
 
 // 处理登录和首页展示
 func Loginhandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Loginhandler")
 	// 根据是否上传post数据区分操作行为
 	// 一 、解析处理ajax上传的数据
 	// fmt.Println(r)
@@ -44,7 +46,14 @@ func Loginhandler(w http.ResponseWriter, r *http.Request) {
 				// enidstr, _ := priv_utils.DesEncrypt([]byte(obj.Id_.Hex()),[]byte(priv_utils.KeyGen(obj.Id_.Hex())))
 				// fmt.Println("enidstr",enidstr)
 				// fmt.Println("enidstr",string(enidstr))
-				htmlstr = []byte("1|./pages/managecenter.html|" + obj.Id_.Hex())
+				htmlstr = []byte("1|./managecenter.html|" + obj.Id_.Hex())
+				lstatus:= mongooper.LoginStatue{
+					bson.NewObjectId(),
+					name,
+					time.Now()}
+				oper := &lstatus
+				oper.DeleteByName(name)
+				oper.Create()
 			}else{
 				htmlstr = []byte("0")
 			}
@@ -66,7 +75,7 @@ func Loginhandler(w http.ResponseWriter, r *http.Request) {
 						"0000",
 						time.Now(),
 						"",
-						"",
+						time.Now(),
 						"0"}
 					oper := &accountcreate
 					createflag := oper.Create()
@@ -74,32 +83,47 @@ func Loginhandler(w http.ResponseWriter, r *http.Request) {
 						// enidstr, _ := priv_utils.DesEncrypt([]byte(id.Hex()),[]byte(priv_utils.KeyGen(id.Hex())))
 						// fmt.Println("first enidstr",enidstr)
 						// fmt.Println("first enidstr",string(enidstr))
-						htmlstr = []byte("1|./pages/managecenter.html|"+id.Hex())
+						htmlstr = []byte("1|./managecenter.html|"+id.Hex())
 					}
 				}
 			}else{
 				htmlstr = []byte("0")
 			}
 		}
-	}else{
-		pathstr, errp := os.Getwd()
-		if errp != nil {
-			panic(errp)
-		}
-		fmt.Println("OK", pathstr)
-		filename := "./pages/login.html"
-		if !priv_utils.CheckFileIsExist(filename) {
-			filename = "./pages/error.html"
-		}
-		log.Println("read file is ", filename)
-		// 读取资源文件数据
-		html, err := ioutil.ReadFile(filename)
-		if err != nil {
-			panic(err)
-		}
-		htmlstr = html
 	}
+	// else{
+	// 	pathstr, errp := os.Getwd()
+	// 	if errp != nil {
+	// 		panic(errp)
+	// 	}
+	// 	fmt.Println("OK", pathstr)
+	// 	filename := "./pages/login.html"
+	// 	if !priv_utils.CheckFileIsExist(filename) {
+	// 		filename = "./pages/error.html"
+	// 	}
+	// 	log.Println("read file is ", filename)
+	// 	// 读取资源文件数据
+	// 	html, err := ioutil.ReadFile(filename)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// 	htmlstr = html
+	// }
 	// log.Println("file content is ", htmlstr)
 	// 返回客户端
 	w.Write([]byte(htmlstr))
+}
+
+func Logouthandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Logouthandler",r.URL, r.URL.Path)
+	errf := r.ParseForm()
+	if errf != nil {
+		fmt.Println("解析表单数据失败！")
+	}
+	name := r.PostFormValue("username")
+	fmt.Println("name>>>",name)
+	lstatus:= mongooper.LoginStatue{}
+	oper := &lstatus
+	oper.DeleteByName(name)
+	w.Write([]byte("./login.html"))
 }

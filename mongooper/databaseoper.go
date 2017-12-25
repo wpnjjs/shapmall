@@ -23,9 +23,11 @@ type Operator interface {
 	// 定义数据操作统一接口CRUD操作
 	Create() int
 	Delete() int
+	DeleteByName(name string) int
 	Update() int
 	Retrieve(idx string) interface{}
 	RetrieveCount() int
+	RetrieveAll() interface{}
 	// Get_ID(name string) interface{}
 }
 
@@ -38,7 +40,7 @@ type AccountManagement struct {
 	// CreateDate string `bson:"createdate"` //创建时间
 	CreateDate time.Time `bson:"createdate"` //创建时间
 	Modifier string `bson:"modifier"` //修改者
-	ModifiedDate string `bson:"modifieddate"` //修改时间
+	ModifiedDate time.Time `bson:"modifieddate"` //修改时间
 	RollCode string `bson:"rollcode"` //角色码
 }
 
@@ -74,6 +76,10 @@ func (account *AccountManagement) Delete(id string) int {
 	return 1
 }
 
+// func (account *AccountManagement) DeleteByName(name string) int {
+// 	return 0
+// }
+
 func (account *AccountManagement) Update() int {
 	return 0
 }
@@ -103,6 +109,19 @@ func (account *AccountManagement) RetrieveCount() int {
 		return -1
 	}
 	return count
+}
+
+func (account *AccountManagement) RetrieveAll() ([]*AccountManagement) {
+	fmt.Println("RetrieveAll")
+	session, database := Connect()
+	defer session.Close()
+	coll := database.C("accountmanagement")
+	var accountall []*AccountManagement
+	err := coll.Find(bson.M{}).All(&accountall)
+	if err != nil {
+		panic(err)
+	}
+	return accountall
 }
 
 // func (account *AccountManagement) Get_ID(name string) interface{} {
@@ -137,7 +156,7 @@ type CurrencyTypeManagement struct {
 	CurrencyName string `bson:"currencyname"` //货币名称
 	AbutmentSystemCode string `bson:"abutmentsystemcode"`//对接系统码
 	CreatorCode string `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建日期
+	CreateDate time.Time `bson:"createdate"` //创建日期
 }
 
 // vip管理
@@ -152,7 +171,7 @@ type VIPLevelManager struct {
 	ValidTime int32 `bson:"validtime"`//VIP有效时间（单位s）
 	AbutmentSystemCode string `bson:"abutmentsystemcode"`//对接系统码
 	CreatorCode string  `bson:"creatorcode"`//创建者
-	CreateDate string `bson:"createdate"`//创建日期
+	CreateDate time.Time `bson:"createdate"`//创建日期
 }
 
 // 会员管理（Relationship of VIPs and Users）
@@ -161,10 +180,10 @@ type RVIPAndUsers struct {
 	Uid string `bson:"uid"`//用户ID
 	LevelCode string `bson:"levelcode"`//VIP代码
 	IsValid int `bson:"isvalid"`//是否有效VIP
-	InValidDate string `bson:"invaliddate"`//失效日期
+	InValidDate time.Time `bson:"invaliddate"`//失效日期
 	CreatorCode string  `bson:"creatorcode"`//创建者
-	CreateDate string `bson:"createdate"`//创建日期
-	ModifiedDate string `bson:"modifieddate"`//修改日期
+	CreateDate time.Time `bson:"createdate"`//创建日期
+	ModifiedDate time.Time `bson:"modifieddate"`//修改日期
 	AbutmentSystemCode string  `bson:"abutmentsystemcode"`//对接系统码
 }
 
@@ -176,7 +195,7 @@ type GoodsTypes struct{
 	GoodsDesc string `bson:"goodsdesc"` //商品类型描述
 	AbutmentSystemCode string `bson:"abutmentsystemcode"` //对接系统码
 	CreatorCode string  `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建日期
+	CreateDate time.Time `bson:"createdate"` //创建日期
 }
 
 // 商品品质管理（Goods Quality）
@@ -186,7 +205,7 @@ type GoodsQuality struct {
 	GoodsQualityDesc string `bson:"goodsqualitydesc"` //级别描述
 	AbutmentSystemCode string `bson:"abutmentsystemcode"`  //对接系统码
 	CreatorCode string  `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建日期
+	CreateDate time.Time `bson:"createdate"` //创建日期
 }
 
 // 商品标识管理（Goods Flags）
@@ -196,7 +215,7 @@ type GoodsFlags struct {
 	GoodsFlagDesc string `bson:"goodsflagdesc"` //商品标识描述
 	AbutmentSystemCode string  `bson:"abutmentsystemcode"` //对接系统码
 	CreatorCode string  `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建日期
+	CreateDate time.Time `bson:"createdate"` //创建日期
 }
 
 // 商品购买限制管理（Goods Restrict Management），定制商品购买制度。如，达到多少级限制，VIP达到限制等。
@@ -207,7 +226,7 @@ type GoodsRestrict struct {
 	RestrictElementCode string `bson:"restrictelementcode"` //限制因素
 	RestrictCondition string `bson:"restrictcondition"` //限制条件
 	CreatorCode string  `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建日期
+	CreateDate time.Time `bson:"createdate"` //创建日期
 	AbutmentSystemCode string  `bson:"abutmentsystemcode"` //对接系统码
 }
 
@@ -218,7 +237,7 @@ type RestrictElement struct {
 	RestrictElementDesc string `bson:"restrictelementdesc"` //因子描述
 	AbutmentSystemCode string  `bson:"abutmentsystemcode"` //对接系统码
 	CreatorCode string  `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建时间
+	CreateDate time.Time `bson:"createdate"` //创建时间
 }
 
 // 活动管理（Activity Management）
@@ -228,12 +247,12 @@ type ActivityManagement struct {
 	ActivityName string `bson:"activityname"` //活动名
 	ActivityTypeCode string `bson:"activitytypecode"` //活动类型码
 	IsValid int `bson:"isvalid"` //是否失效
-	StartDate string `bson:"startdate"` //活动开始时间
-	EndDate string `bson:"enddate"` //活动结束时间
+	StartDate time.Time `bson:"startdate"` //活动开始时间
+	EndDate time.Time `bson:"enddate"` //活动结束时间
 	RestrictElementCode string `bson:"restrictelementcode"` //限制因素
 	JoinGoodsCodelist string `bson:"joingoodscodelist"` //活动参与的商品编码数组，JSON串，k:v。key商品码，value权值likes
 	CreatorCode string  `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建时间
+	CreateDate time.Time `bson:"createdate"` //创建时间
 	AbutmentSystemCode string `bson:"abutmentsystemcode"` //对接系统码
 }
 
@@ -243,7 +262,7 @@ type ActivityTypeManagement struct {
 	ActivityTypeCode string `bson:"activitytypecode"` //活动类型码
 	ActivityTypeDesc string `bson:"activitytypedesc"` //活动类型描述
 	CreatorCode string `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建时间
+	CreateDate time.Time `bson:"createdate"` //创建时间
 	AbutmentSystemCode string `bson:"abutmentsystemcode"` //对接系统码
 }
 
@@ -260,10 +279,10 @@ type Backpack struct {
 // 对接配置（Abutment Managment），对对接的系统后台进行管理对接码（此处为有游戏的唯一码。），以对接码区分各游戏接入数据。
 type AbutmentConfig struct {
 	Id_ bson.ObjectId `bson:"_id"`
-	AbutmentSystemName string `bson:"abutmentsystemName"` //对接系统名称
+	AbutmentSystemName string `bson:"abutmentsystemname"` //对接系统名称
 	AbutmentSystemCode string `bson:"abutmentsystemcode"` //对接系统码
 	CreatorCode string `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建日期 
+	CreateDate time.Time `bson:"createdate"` //创建日期 
 }
 
 func (abutment *AbutmentConfig) Create() int {
@@ -300,7 +319,22 @@ func (abutment *AbutmentConfig) Delete(id string) int {
 }
 
 func (abutment *AbutmentConfig) Update() int {
-	return 0
+	fmt.Println("Update", abutment.Id_)
+	session, database := Connect()
+	defer session.Close()
+	coll := database.C("abutmentconfig")
+	err := coll.Update(bson.M{"creatorcode":abutment.Id_},bson.M{"$set":bson.M{
+		"abutmentsystemname":abutment.AbutmentSystemName,
+		"abutmentsystemcode":abutment.AbutmentSystemCode,
+		"CreateDate":time.Now()}})
+	if err != nil {
+		if err.Error() == "not found" {
+			return 0
+		}else{
+			panic(err)
+		}
+	}
+	return 1
 }
 
 func (abutment *AbutmentConfig) Retrieve(idx string) (int, *AbutmentConfig) {
@@ -328,6 +362,116 @@ func (abutment *AbutmentConfig) RetrieveCount() int {
 	return count
 }
 
+func (account *AbutmentConfig) RetrieveAll(uid string) ([]*AbutmentConfig) {
+	fmt.Println("RetrieveAll")
+	session, database := Connect()
+	defer session.Close()
+	coll := database.C("abutmentconfig")
+	var abutmentall []*AbutmentConfig
+	if uid == "" {
+		err := coll.Find(bson.M{}).All(&abutmentall)
+		if err != nil {
+			panic(err)
+		}
+	}else{
+		err := coll.Find(bson.M{"creatorcode":uid}).All(&abutmentall)
+		if err != nil {
+			panic(err)
+		}
+	}
+	return abutmentall
+}
+
+type LoginStatue struct {
+	Id_ bson.ObjectId `bson:"_id"`
+	Name string `bson:"name"` //角色名
+	InValidDate time.Time `bson:"invaliddate"`//失效日期
+}
+
+func (ltatue *LoginStatue) Create() int {
+	fmt.Println("Create")
+	session, database := Connect()
+	defer session.Close()
+	coll := database.C("loginstatue")
+	err := coll.Insert(ltatue)
+	fmt.Println("err", err)
+	var rst int
+	if err != nil {
+		rst = 0
+		panic(err)
+	}else{
+		rst = 1
+	}
+	return rst
+}
+
+func (ltatue *LoginStatue) Delete(id string) int {
+	fmt.Println("DeleteById", id)
+	session, database := Connect()
+	defer session.Close()
+	coll := database.C("loginstatue")
+	err := coll.RemoveId(bson.ObjectIdHex(id))
+	if err != nil {
+		if err.Error() == "not found" {
+			return 0
+		}else{
+			panic(err)
+		}
+	}
+	return 1
+}
+
+func (ltatue *LoginStatue) DeleteByName(name string) int {
+	fmt.Println("Delete", name)
+	session, database := Connect()
+	defer session.Close()
+	coll := database.C("loginstatue")
+	err := coll.Remove(bson.D{{"name", name}})
+	if err != nil {
+		if err.Error() == "not found" {
+			return 0
+		}else{
+			panic(err)
+		}
+	}
+	return 1
+}
+
+func (ltatue *LoginStatue) Update() int {
+	return 0
+}
+
+func (ltatue *LoginStatue) Retrieve(idx string) (int, *LoginStatue) {
+	fmt.Println("Retrieve", idx)
+	session, database := Connect()
+	defer session.Close()
+	coll := database.C("loginstatue")
+	var alstatue *LoginStatue
+	err := coll.Find(bson.M{"rollname":idx}).One(&alstatue)
+	if err != nil { 
+		return -1, nil
+	}
+	return 1, alstatue
+}
+
+func (ltatue *LoginStatue) RetrieveCount() int {
+	fmt.Println("RetrieveCount")
+	return 0
+}
+
+func (account *LoginStatue) RetrieveAll() ([]*LoginStatue) {
+	fmt.Println("RetrieveAll")
+	// session, database := Connect()
+	// defer session.Close()
+	// coll := database.C("loginstatue")
+	var loginstatueall []*LoginStatue
+	// err := coll.Find(bson.M{}).All(&abutmentall)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	return loginstatueall
+}
+
 // 角色管理（Roll Management），进入此系统的角色。创建用户分配角色，控制访问权限。 todo
 type RollManagement struct {
 	Id_ bson.ObjectId `bson:"_id"`
@@ -335,6 +479,6 @@ type RollManagement struct {
 	RollCode string `bson:"rollcode"` //角色码
 	RollRight string `bson:"rollright"` //访问页面权限JSON串
 	CreatorCode string `bson:"creatorcode"` //创建者
-	CreateDate string `bson:"createdate"` //创建时间
+	CreateDate time.Time `bson:"createdate"` //创建时间
 	ModifiedDate string `bson:"modifieddate"` //修改时间
 }

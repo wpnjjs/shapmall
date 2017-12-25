@@ -1,0 +1,94 @@
+<html>
+        <head>
+            <title>Shopping Mall Management</title>
+            <link href="./css/abutment.css" rel="stylesheet" type="text/css"/>
+            <link rel="bookmark" type="image/x-icon" href="./res/favicon.ico"/>
+            <link rel="shortcut icon" href="./res/favicon.ico"/>
+            <link rel="icon" href="./res/favicon.ico"/>
+            <!-- <style type="text/css">
+                @import "./pages/css/common.css";
+            </style> -->
+            <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+            <script src="./jquery-3.2.1.min.js"></script>
+            <script src="./vue.min.js"></script>
+        </head>
+        <body>
+            <div id="pae">
+                <script type="text/x-template" id="grid-template">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" v-model="checked" @click="selectall"/>
+                            </th>
+                            <th v-for="key in keys">
+                                <!-- @click="sortBy(key)" -->
+                                <!-- :class="{ active: sortKey == key }"> -->
+                                {{ key }}
+                                <!-- | capitalize <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                                </span> -->
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="entry in filteredData">
+                            <td>
+                                <input type="checkbox" v-model="entry['checked']" @click="select(entry['Id_'])"/>
+                            </td>
+                            <td v-for="key in columns">
+                                {{entry[key]}}
+                            </td>
+                            <td>
+                                <a href="#" @click="modify(entry['Id_'])">修改</a> | 
+                                <a href="#" @click="delone(entry['Id_'])">删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <!-- <a href="#" @click="selectall">全选</a> |  -->
+                                <a href="#" @click="batchdel">批量删除</a> | 
+                                <a href="#" @click="create">新增</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </script>
+                    
+                <!-- demo root element -->
+                <div id="demo">
+                    <form id="search">
+                        Search <input name="query" v-model="searchQuery">
+                    </form>
+                    <demo-grid
+                        :count="columnsCount"
+                        :keys="columnNames"
+                        :columns="gridColumns"
+                        :data="gridData"
+                        :filter-key="searchQuery">
+                    </demo-grid>
+
+                    <div id="createandupdate" class="white_content">
+                        <div class="title">
+                            <p>新增</p>
+                        </div>
+                        <div class="line"></div>
+                        <div class="form">
+                            <form id="create" method="post">
+                                <label>对接系统名称:</label><input type="text"  name="abutmentsystemname" v-model="abutmentsystemname"/><br/>
+                                <br/>
+                                <label>对接系统名称:</label><input type="text"  name="abutmentsystemcode" v-model="abutmentsystemcode"/><br/>
+                                <br/>
+                                <input id="btnsub" type="button" value="确定" v-on:click="insert"/>
+                                <input id="btnsub" type="button" value="关闭" v-on:click="close"/>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="fade" class="black_overlay"></div>
+                </div>
+                <script src="./script/abutment.js"></script>
+            </div>
+
+                
+        </body>
+    </html>

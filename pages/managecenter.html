@@ -17,41 +17,34 @@
         <div id="top">
             <div id="top_left">
                 <div id="icon">
-                    <img scr=""/>
+                    <!-- <img scr=""/> -->
                 </div>
                 <div id="sysname">
-                    <p>管理中心<br>Management Center</p>
+                    <p>管理中心 Management Center</p>
                 </div>
             </div>
             <div id="top_right">
-                <table id="loginfo">
-                    <tr>
-                        <td>
-                            {{ username }}
-                        </td>
-                        <td>
-                            <a v-bind:href="['/login/'+username]"> 退出 </a>
-                        </td>
-                    </tr>
-                </table>
+                <div id="loginfo">
+                    <nav>
+                        <a href="#" v-on:click="personalCenter">{{ username }}</a> | 
+                        <a href="#" v-on:click="logout">退出</a>
+                    </nav>
+                </div>
             </div>
             <script src="./script/center.js"></script>
         </div>
         <div id="line"></div>
-        <div id="content">
-            <div id="tree">
-                <table id="navi">
-                    <tr>
-                        <td id=“leaf” style="background-color: #42b983;">对接管理</td>
-                    </tr>
-                </table>
+        <div id="content" style="clear:both">
+            <div id="tree" style="float:left">
+                <div class="node" id="abutment">
+                    对接管理
+                </div>
+                <div class="leaf">
+                    对接管理
+                </div>
             </div>
-            <div id="page"></div>
+            <div id="mid" style="float:left"></div>
+            <div id="page" style="float:left"></div>
         </div>
-        <script>
-            console.log(localStorage.uid);
-            document.write(localStorage.name);
-            document.write(localStorage.uid);
-        </script>
     </body>
 </html>

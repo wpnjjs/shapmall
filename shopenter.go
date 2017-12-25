@@ -15,6 +15,8 @@ func main(){
 	fmt.Println("["+time.Now().String()+"]:Go Service is running...")
 	http.HandleFunc("/test",tryit.Testhandler)
 	http.HandleFunc("/login",logicalcontrol.Loginhandler)
+	http.HandleFunc("/logout",logicalcontrol.Logouthandler)
+	http.HandleFunc("/abutment/",logicalcontrol.AbutmentConfigHandler)
 	http.HandleFunc("/pages/",getres)
 	err:= http.ListenAndServe("0.0.0.0:8080",nil)
 	if err != nil {
@@ -23,9 +25,9 @@ func main(){
 }
 
 func getres(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("getres", r.URL)
+	// fmt.Println("getres", r.URL)
 	filename := "." + r.URL.Path
-	fmt.Println("filename", filename)
+	// fmt.Println("filename", filename)
 	res, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)

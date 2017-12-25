@@ -1,13 +1,10 @@
-/* body
-{
-    text-align: center;
-} */
-
 /* begin login.html */
 div#head
 {
+    /* float: top; */
     text-align: center;
-    margin: 70px auto;
+    margin: 0px auto;
+    background-color: #87B6A7;
 }
 
 div#tip
@@ -23,16 +20,15 @@ div#app
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 800px;
+    width: 400px;
     height: 500px;
-    margin-left: -400px;
+    margin-left: -200px;
     margin-top: -250px;
-    background: url("../res/images/loginbgimg.jpg") no-repeat center; 
+    background-color: #F8F8F8;
+    /* background: url("../res/images/loginbgimg.jpg") no-repeat center;  */
     /* border: 1px solid greenyellow; */
     /* background-color: green; */
     border-radius: 5%;
-    box-shadow: 10px 10px 5px #888888;
-    
 }
 
 div.area
@@ -51,12 +47,12 @@ div.lab
     float: left;
     width: 100px;
     height: 30px;
-    background: grey;
+    background: #87B6A7;
 }
 
 div.labsubmit
 {
-    background: grey;
+    background: #87B6A7;
 }
 
 div#inp
@@ -88,7 +84,7 @@ input#btnsub
 {
     width: 250px;
     font-size: 18;
-    background: grey;
+    background: #87B6A7;
     /* border-radius: 5%; */
     border: 1px solid rebeccapurple;
 }

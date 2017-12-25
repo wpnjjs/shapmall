@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"fmt"
+	"strings"
 )
 
 // 检查文件是否存在
@@ -81,4 +82,18 @@ func KeyGen(key string) string {
 	}
 	fmt.Println("strkey", strkey)
 	return strkey
+}
+
+// exchange string of array to array type
+func ExStringToArray(arrstr string) []string {
+	fmt.Println("ExStringToArray", arrstr)
+	arrstr = strings.TrimRight(strings.TrimLeft(arrstr,"["),"]")
+	// fmt.Println("is >>", arrstr)
+	idarrf := strings.Split(string(arrstr), ",")
+	// fmt.Println("final arr is >>>", idarrf)
+	for i:=0;i<len(idarrf);i++ {
+		idarrf[i] = strings.Trim(idarrf[i],string('"'))
+	}
+	// fmt.Println("arr is >>", idarrf)
+	return idarrf
 }
