@@ -1,6 +1,8 @@
 body {
     margin: 0 auto;
     padding: 0px 0px 0px 0px;
+    font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
     background-color: #F8F8F8;
     
 }
@@ -9,7 +11,7 @@ div#top {
     height: 60px;
     margin-top: 0px;
     padding-top: 0px;
-    background-color: #66b9bf;
+    background-color: #333366;
 }
 
 div#top_left
@@ -67,8 +69,9 @@ div#tree
 {
     float: left;
     width: 180px;
-    height: 100%;
-    border-right: 1px solid grey;
+    top: 62px;
+    /* height: 100%; */
+    /* border-right: 1px solid grey; */
     margin-left: 10px;
 }
 
@@ -90,13 +93,20 @@ div.leaf
     margin: 5px;
 }
 
-/* div#mid {
-    float: left;
-    margin-left: 185px;
+div#mid {
+    /* float: left; */
+    /* margin-left: 185px; */
     width: 5px;
-    height: 100%;
-    background-color: red;
-} */
+    top: 62px;
+    z-index: 10;
+    left: 0;
+    bottom: 0;
+    height: 830px;
+    /* margin-top: -62px; */
+    background-color: grey;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 
 div#page {
     margin-left: 5px;

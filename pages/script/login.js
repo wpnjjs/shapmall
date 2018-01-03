@@ -55,3 +55,10 @@ var form = new Vue({
         ,500)
     }
 })
+
+// 键盘enter键触发登录
+function loginByKeyboard13(){
+    if(event.keyCode == 13){
+        document.getElementById("btnsub").click();
+    }
+}

@@ -12,18 +12,17 @@ Vue.component('demo-grid', {
     },
     data: function () {
         this.checkedboxarr = new Array();
+        console.log("data>>init");
         this.retrive();
     },
     computed: {
         filteredData: function () {
-            return this.data
+            console.log("computed>>filteredData");
+            console.log("this.data",this.data)
+            // return this.data
+            return this.data;
         }
     },
-    // filters: {
-    //   capitalize: function (str) {
-    //     return str.charAt(0).toUpperCase() + str.slice(1)
-    //   }
-    // },
     methods: {
         modify: _.debounce( function (key) {
             console.log("modify",key)
@@ -128,15 +127,15 @@ Vue.component('demo-grid', {
                 data: {},
                 success: function(msg) {
                     console.log("/abutment/r",msg);
-                    if(msg){
-                        this.data = [];
-                    }else{
+                    if("null" != msg){
                         msgjson = JSON.parse(msg)
                         msgjson.forEach(record => {
                             record.checked = false
                         });
                         console.log(msgjson);
                         this.data = msgjson;
+                    }else{
+                        this.data = [];
                     }
                 }.bind(this),
                 error: function(msg){
@@ -161,6 +160,30 @@ Vue.component('demo-grid', {
         abutmentsystemcode: "code",
     },
     methods: {
+        retrive: _.debounce(  function () {
+            console.log("retrive");
+            $.ajax({
+                type: "POST",
+                url: "/abutment/r",
+                traditional: true,
+                data: {},
+                success: function(msg) {
+                    console.log("/abutment/r",msg);
+                    if(msg){
+                        msgjson = JSON.parse(msg)
+                        msgjson.forEach(record => {
+                            record.checked = false
+                        });
+                        console.log(msgjson);
+                        this.gridData = msgjson;
+                    }
+                }.bind(this),
+                error: function(msg){
+                    alert("服务器异常！");
+                }.bind(this)            
+            });
+        },500),
+
         insert: _.debounce(  function () {
             console.log("insert");
             // 插入数据
@@ -178,39 +201,12 @@ Vue.component('demo-grid', {
                     document.getElementById("createandupdate").style.display="none";
                     document.getElementById("fade").style.display="none";
                     // 插入数据成功，获取新数据列表
-                    $.ajax({
-                        type: "POST",
-                        url: "/abutment/r",
-                        traditional: true,
-                        data: {},
-                        success: function(msg) {
-                            console.log("/abutment/r",msg);
-                            msgjson = JSON.parse(msg)
-                            msgjson.forEach(record => {
-                                record.checked = false
-                            });
-                            console.log(msgjson);
-                            this.gridData = msgjson;
-                        }.bind(this),
-                        error: function(msg){
-                            alert("服务器异常！");
-                        }.bind(this)            
-                    });
+                    this.retrive();
                 }.bind(this),
                 error: function(msg){
                     alert("服务器异常！");
                 }.bind(this)            
             });
-            
-            // this.gridData.push(
-            //     { 
-            //     checked: true,
-            //     id_: 125,    
-            //     abutmentsystemname: 'Chuck NorrisChuck NorrisChuck Norris', 
-            //     abutmentsystemcode: Infinity,
-            //     creatorcode: "aaaa",
-            //     createdate: "aaaa" }
-            // );
         },500),
         
         close: _.debounce( function () {
